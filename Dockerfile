@@ -5,10 +5,10 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY ["EventService.Api/EventService.Api.csproj", "EventService.Api/"]
-RUN dotnet restore "EventService.Api/EventService.Api.csproj"
+COPY ["EventService/EventService.Api/EventService.Api.csproj", "EventService/EventService.Api/"]
+RUN dotnet restore "EventService/EventService.Api/EventService.Api.csproj"
 COPY . .
-WORKDIR "/src/EventService.Api"
+WORKDIR "/src/EventService/EventService.Api"
 RUN dotnet build "EventService.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish

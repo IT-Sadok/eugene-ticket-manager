@@ -1,14 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventService.Api", "EventService.Api\EventService.Api.csproj", "{0CA323B8-0C42-46D6-89D4-CFFF3182D93D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventService.Api", "EventService\EventService.Api\EventService.Api.csproj", "{0CA323B8-0C42-46D6-89D4-CFFF3182D93D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EventService", "EventService", "{D378A933-66F1-4097-AA5E-EEF33B3C7659}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventService.Application", "EventService.Application\EventService.Application.csproj", "{5FAC988D-9D27-4807-8E93-EA13F3497D68}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventService.Application", "EventService\EventService.Application\EventService.Application.csproj", "{5FAC988D-9D27-4807-8E93-EA13F3497D68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventService.Domain", "EventService.Domain\EventService.Domain.csproj", "{0AC9A082-0786-44BF-B78E-08AB5822D2C7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventService.Domain", "EventService\EventService.Domain\EventService.Domain.csproj", "{0AC9A082-0786-44BF-B78E-08AB5822D2C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventService.Infrastructure", "EventService.Infrastructure\EventService.Infrastructure.csproj", "{A48F864C-3161-463A-975C-AC858F346885}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventService.Infrastructure", "EventService\EventService.Infrastructure\EventService.Infrastructure.csproj", "{A48F864C-3161-463A-975C-AC858F346885}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
