@@ -11,6 +11,6 @@ public class CreateEventHandler(IEventsRepository eventsRepository) : IRequestHa
     {
         var eventRepo = new Event()
             { Title = request.Title, Description = request.Description, StartedAt = request.StartedAt };
-        await eventsRepository.InsertAsync(eventRepo);
+        await eventsRepository.CreateAsync(eventRepo);
     }
 }

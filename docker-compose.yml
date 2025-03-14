@@ -10,21 +10,21 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=local
     depends_on:
-      - postgresql_database
+      - mongodb_database
     networks:
       - event-platform-network
 
-  postgresql_database:
-    image: postgres:15
-    container_name: postgres
+  mongodb_database:
+    image: mongo:latest
+    container_name: mongodb
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=Passw0rd!
-      - POSTGRES_DB=EventStoreDb
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=Passw0rd!
+      - MONGO_INITDB_DATABASE=EventStoreDb
     ports:
-      - "5432:5432"
+      - "27017:27017"
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - mongodb-data:/data/db
     networks:
       - event-platform-network
 
@@ -33,4 +33,4 @@ networks:
     driver: bridge
 
 volumes:
-  postgres-data:
+  mongodb-data:

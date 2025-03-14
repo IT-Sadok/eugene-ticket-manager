@@ -1,7 +1,7 @@
-using System.Reflection;
-using EventService.Infrastructure.Database;
+using EventService.Api.Controllers;
+using EventService.Domain.RepositoryContracts;
 using EventService.Infrastructure.Extensions;
-using TicketService;
+using TicketService.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,11 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddInfrastructureService(builder.Configuration);
-builder.Services.AddMediatR(config =>
-{
-    config.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly(),
-        typeof(ApplicationAssemblyMarker).Assembly);
-});
+builder.Services.AddApplicationServices();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -33,8 +29,9 @@ app.MapControllers();
 
 using (var scope = app.Services.CreateScope())
 {
-    scope.ServiceProvider.GetRequiredService<EventServiceContext>().Database.EnsureDeleted();
-    scope.ServiceProvider.GetRequiredService<EventServiceContext>().Database.EnsureCreated();
+    var initializer = scope.ServiceProvider.GetRequiredService<IMongoDbInitializer>();
+    initializer.InitializeAsync().Wait();
 }
 
+app.MapEventEndpoints();
 app.Run();

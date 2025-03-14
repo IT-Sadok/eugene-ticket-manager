@@ -2,7 +2,7 @@
 
 namespace EventService.Domain.RepositoryContracts.Events;
 
-public interface IEventsRepository: IDbRepository<Event>
+public interface IEventsRepository: IEventServiceDbRepository<Event>
 {
     Task<List<Event>> GetAllEvents();
 }

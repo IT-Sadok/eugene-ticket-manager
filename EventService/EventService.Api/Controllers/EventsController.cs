@@ -1,32 +1,23 @@
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using TicketService.Commands;
 using TicketService.Queries;
 
 namespace EventService.Api.Controllers;
 
-[ApiController]
-[Route("[controller]")]
-public class EventsController : ControllerBase
+public static class EventEndpoints
 {
-    private readonly ISender _sender;
-
-    public EventsController(ISender sender)
+    public static void MapEventEndpoints(this IEndpointRouteBuilder app)
     {
-        _sender = sender;
-    }
+        app.MapGet("/events", async (ISender sender) =>
+        {
+            var response = await sender.Send(new GetAllEventsQuery());
+            return Results.Ok(response);
+        });
 
-    [HttpGet]
-    public async Task<IActionResult> ListEvents()
-    {
-        var response = await _sender.Send(new GetAllEventsQuery());
-        return Ok(response);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> CreateEvent(CreateEventCommand command)
-    {
-        await _sender.Send(command);
-        return Created();
+        app.MapPost("/events", async (ISender sender, CreateEventCommand command) =>
+        {
+            await sender.Send(command);
+            return Results.Created();
+        });
     }
 }
