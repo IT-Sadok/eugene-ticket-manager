@@ -4,12 +4,12 @@ using MongoDB.Driver;
 
 namespace EventService.Infrastructure.Database;
 
-public class EventServiceEventServiceDbRepository<T>() : IEventServiceDbRepository<T>
+public class EventServiceDbRepository<T>() : IEventServiceDbRepository<T>
     where T : BaseEntity
 {
     private readonly IMongoCollection<T> _collection;
 
-    protected EventServiceEventServiceDbRepository(IMongoDatabase database, string collectionName) : this()
+    protected EventServiceDbRepository(IMongoDatabase database, string collectionName) : this()
     {
         _collection = database.GetCollection<T>(collectionName);
     }
