@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Data;
+using MediatR;
 using TicketService.Application.Commands;
 using TicketService.Domain.RepositoryContracts.Tickets;
 using TicketService.Domain.RepositoryModels;
@@ -10,16 +11,29 @@ public class CreateTicketsHandler(ITicketsRepository ticketsRepository) : IReque
 {
     public async Task Handle(CreateTicketsCommand command, CancellationToken cancellationToken)
     {
-        var ticketWithHighestPlaceNumber = await ticketsRepository.GetWithHighestPlaceNumberByEventId(command.EventId);
-        var startCount = ticketWithHighestPlaceNumber?.PlaceNumber ?? 0;
-        var tickets = new List<Ticket>();
-        for (var i = 1; i <= command.Quantity; i++)
+        await using var transaction = await ticketsRepository.BeginTransactionAsync(IsolationLevel.Serializable);
+        try
         {
-            tickets.Add(new Ticket()
-                { Status = TicketStatus.Available, PlaceNumber = i + startCount, EventId = command.EventId });
-        }
+            var ticketWithHighestPlaceNumber =
+                await ticketsRepository.GetWithHighestPlaceNumberByEventId(command.EventId);
+            var startCount = ticketWithHighestPlaceNumber?.PlaceNumber ?? 0;
+            var tickets = Enumerable.Range(1, command.Quantity).Select(i => new Ticket
+            {
+                Status = TicketStatus.Available,
+                PlaceNumber = i + startCount,
+                EventId = command.EventId
+            }).ToList();
 
-        if (tickets.Any())
-            await ticketsRepository.CreateTicketsAsync(tickets);
+            if (tickets.Any())
+            {
+                await ticketsRepository.CreateTicketsAsync(tickets);
+                await transaction.CommitAsync();
+            }
+
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+        }
     }
 }

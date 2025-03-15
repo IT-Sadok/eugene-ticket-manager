@@ -23,7 +23,7 @@ public static class TicketsEndpoint
             return Results.Created();
         });
 
-        app.MapGet($"events/{{id:guid}}/{RouteConstants.TicketsRoute}", async (Guid id, ISender sender) =>
+        app.MapGet($"/events/{{id:guid}}{RouteConstants.TicketsRoute}", async (Guid id, ISender sender) =>
         {
             var response = await sender.Send(new GetTicketsByEventIdQuery() { EventId = id });
             return Results.Ok(response);

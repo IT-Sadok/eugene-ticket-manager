@@ -1,4 +1,5 @@
-﻿using TicketService.Domain.RepositoryModels;
+﻿using System.Data;
+using TicketService.Domain.RepositoryModels;
 
 namespace TicketService.Domain.RepositoryContracts;
 
@@ -8,4 +9,5 @@ public interface ITicketServiceDbRepository<T> where T: BaseEntity
     IQueryable<T> GetAllRecords();
     void UpdateAsync(T entity);
     Task AddRangeAsync(List<T> entities);
+    Task<ITransaction> BeginTransactionAsync(IsolationLevel isolationLevel);
 }

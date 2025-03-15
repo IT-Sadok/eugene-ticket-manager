@@ -19,7 +19,7 @@ public class TicketsRepository(TicketServiceDbContext dbContext) : TicketService
 
     public async Task<List<Ticket>> GetAllByEventIdAsync(Guid eventId)
     {
-        return await GetAllRecords().Where(x => x.EventId == eventId).ToListAsync();
+        return await GetAllRecords().Where(x => x.EventId == eventId).OrderBy(x => x.PlaceNumber).ToListAsync();
     }
 
     public async Task<Ticket?> GetWithHighestPlaceNumberByEventId(Guid eventId)

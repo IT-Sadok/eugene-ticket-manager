@@ -1,5 +1,7 @@
-﻿using TicketService.Domain.RepositoryContracts;
+﻿using Microsoft.EntityFrameworkCore;
+using TicketService.Domain.RepositoryContracts;
 using TicketService.Domain.RepositoryModels;
+using IsolationLevel = System.Data.IsolationLevel;
 
 namespace TicketService.Infrastructure.Database;
 
@@ -24,5 +26,11 @@ public class TicketServiceDbRepository<T>(TicketServiceDbContext dbContext) : IT
     public void UpdateAsync(T entity)
     {
         dbContext.Set<T>().Update(entity);
+    }
+
+    public async Task<ITransaction> BeginTransactionAsync(IsolationLevel isolationLevel)
+    {
+        var transaction = await dbContext.Database.BeginTransactionAsync(IsolationLevel.Serializable);
+        return new TicketServiceTransaction(transaction);
     }
 }
