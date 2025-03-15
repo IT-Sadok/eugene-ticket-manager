@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TicketService.Api.Helpers;
+using TicketService.Api.Requests;
 using TicketService.Application.Commands;
 using TicketService.Application.Queries;
 
@@ -16,13 +17,13 @@ public static class TicketsEndpoint
             return Results.Ok(response);
         });
 
-        app.MapPost(RouteConstants.TicketsRoute, async (ISender sender, CreateTicketsCommand command) =>
+        app.MapPost(RouteConstants.TicketsRoute, async (ISender sender, CreateTicketsRequest  command) =>
         {
-            await sender.Send(command);
+            await sender.Send(new CreateTicketsCommand(){EventId = command.EventId, Quantity = command.Quantity});
             return Results.Created();
         });
 
-        app.MapGet($"{RouteConstants.TicketsRoute}/events/{{id:guid}}", async (Guid id, ISender sender) =>
+        app.MapGet($"events/{{id:guid}}/{RouteConstants.TicketsRoute}", async (Guid id, ISender sender) =>
         {
             var response = await sender.Send(new GetTicketsByEventIdQuery() { EventId = id });
             return Results.Ok(response);
