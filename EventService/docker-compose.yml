@@ -4,7 +4,7 @@ services:
   event_service:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: EventService.Api/Dockerfile
     ports:
       - "8000:80"
     environment:
@@ -16,7 +16,7 @@ services:
 
   mongodb_database:
     image: mongo:latest
-    container_name: mongodb
+    container_name: eventservice.db
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=Passw0rd!
@@ -33,4 +33,4 @@ networks:
     driver: bridge
 
 volumes:
-  mongodb-data:
+  mongodb-data: 
