@@ -8,4 +8,6 @@ public interface ITicketsRepository: ITicketServiceDbRepository<Ticket>
     Task CreateTicketsAsync(List<Ticket> ticket);
     Task<List<Ticket>> GetAllByEventIdAsync(Guid eventId);
     Task<Ticket?> GetWithHighestPlaceNumberByEventId(Guid eventId);
+    Task<Ticket?> GetById(Guid ticketId);
+    Task ReserveTicketAsync(Guid ticketId);
 }

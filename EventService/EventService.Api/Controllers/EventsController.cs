@@ -1,7 +1,7 @@
 using EventService.Api.Helpers;
+using EventService.Application.Commands;
+using EventService.Application.Queries;
 using MediatR;
-using TicketService.Commands;
-using TicketService.Queries;
 
 namespace EventService.Api.Controllers;
 
@@ -18,6 +18,12 @@ public static class EventEndpoints
         app.MapPost(RouteConstants.EventsRoute, async (ISender sender, CreateEventCommand command) =>
         {
             await sender.Send(command);
+            return Results.Created();
+        });
+
+        app.MapPost($"{RouteConstants.EventsRoute}/tickets/{{id:guid}}", async (ISender sender, Guid id) =>
+        {
+            await sender.Send(new ReserveTicketCommand(){TicketId = id});
             return Results.Created();
         });
     }

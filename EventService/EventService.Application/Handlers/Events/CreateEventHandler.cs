@@ -1,9 +1,9 @@
-﻿using EventService.Domain.RepositoryContracts.Events;
+﻿using EventService.Application.Commands;
+using EventService.Domain.RepositoryContracts.Events;
 using EventService.Domain.RepositoryModels;
 using MediatR;
-using TicketService.Commands;
 
-namespace TicketService.Handlers.Events;
+namespace EventService.Application.Handlers.Events;
 
 public class CreateEventHandler(IEventsRepository eventsRepository) : IRequestHandler<CreateEventCommand>
 {

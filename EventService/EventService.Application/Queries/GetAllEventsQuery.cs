@@ -1,7 +1,7 @@
 ﻿using EventService.Domain.RepositoryModels;
 using MediatR;
 
-namespace TicketService.Queries;
+namespace EventService.Application.Queries;
 
 public class GetAllEventsQuery : IRequest<List<Event>>
 {
