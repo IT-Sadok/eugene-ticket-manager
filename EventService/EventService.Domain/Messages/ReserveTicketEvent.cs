@@ -1,6 +1,6 @@
 namespace EventService.Domain.Messages;
 
-public record ReserveTicketRequest
+public record ReserveTicketEvent
 {
     public Guid TicketId { get; init; }
 }

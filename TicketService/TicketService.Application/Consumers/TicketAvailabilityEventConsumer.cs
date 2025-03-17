@@ -5,10 +5,10 @@ using TicketService.Domain.RepositoryModels.Enums;
 
 namespace TicketService.Application.Consumers;
 
-public class TicketAvailabilityRequestConsumer(ITicketsRepository ticketsRepository)
-    : IConsumer<Batch<ReserveTicketRequest>>
+public class TicketAvailabilityEventConsumer(ITicketsRepository ticketsRepository)
+    : IConsumer<Batch<ReserveTicketEvent>>
 {
-    public async Task Consume(ConsumeContext<Batch<ReserveTicketRequest>> context)
+    public async Task Consume(ConsumeContext<Batch<ReserveTicketEvent>> context)
     {
         foreach (var messageContext in context.Message)
         {

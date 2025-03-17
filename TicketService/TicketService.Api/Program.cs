@@ -26,7 +26,7 @@ builder.Services.AddMassTransit(x =>
     x.UsingInMemory();
     x.AddRider(rider =>
     {
-        rider.AddConsumer<TicketAvailabilityRequestConsumer>(c =>
+        rider.AddConsumer<TicketAvailabilityEventConsumer>(c =>
             c.Options<BatchOptions>(o =>
             {
                 o.MessageLimit = 50;
@@ -37,7 +37,7 @@ builder.Services.AddMassTransit(x =>
         {
             cfg.Host(kafkaBootstrapServers);
 
-            cfg.TopicEndpoint<ReserveTicketRequest>(KafkaConstants.TicketReservationRequestTopic, KafkaConstants.TicketServiceGroup, e =>
+            cfg.TopicEndpoint<ReserveTicketEvent>(KafkaConstants.TicketReservationRequestTopic, KafkaConstants.TicketServiceGroup, e =>
             {
 
                 e.CreateIfMissing(t =>
@@ -46,7 +46,7 @@ builder.Services.AddMassTransit(x =>
                     t.ReplicationFactor = 1;
                 });
 
-                e.ConfigureConsumer<TicketAvailabilityRequestConsumer>(context);
+                e.ConfigureConsumer<TicketAvailabilityEventConsumer>(context);
 
                 e.AutoOffsetReset = AutoOffsetReset.Earliest;
             });

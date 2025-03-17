@@ -1,7 +1,6 @@
 using EventService.Api.Controllers;
 using EventService.Api.Helpers;
 using EventService.Application.Extensions;
-using EventService.Application.Services;
 using EventService.Domain.Messages;
 using EventService.Domain.RepositoryContracts;
 using EventService.Infrastructure.Extensions;
@@ -17,14 +16,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddInfrastructureService(builder.Configuration);
 builder.Services.AddApplicationServices();
-builder.Services.AddScoped<ITicketsReservationService, TicketsReservationService>();
 
 builder.Services.AddMassTransit(x =>
 {
     x.UsingInMemory();
     x.AddRider(rider =>
     {
-        rider.AddProducer<ReserveTicketRequest>(KafkaConstants.TicketReservationRequestTopic);
+        rider.AddProducer<ReserveTicketEvent>(KafkaConstants.TicketReservationRequestTopic);
 
         rider.UsingKafka((context, cfg) => { cfg.Host(kafkaBootstrapServers); });
     });
