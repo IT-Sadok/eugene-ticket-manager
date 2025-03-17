@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace TicketService.Commands;
+namespace EventService.Application.Commands;
 
 public class CreateEventCommand: IRequest
 {

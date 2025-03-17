@@ -1,9 +1,9 @@
-﻿using EventService.Domain.RepositoryContracts.Events;
+﻿using EventService.Application.Queries;
+using EventService.Domain.RepositoryContracts.Events;
 using EventService.Domain.RepositoryModels;
 using MediatR;
-using TicketService.Queries;
 
-namespace TicketService.Handlers.Events;
+namespace EventService.Application.Handlers.Events;
 
 public class GetAllEventsHandler(IEventsRepository eventsRepository) : IRequestHandler<GetAllEventsQuery, List<Event>>
 {

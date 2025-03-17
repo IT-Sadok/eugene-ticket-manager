@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TicketService.Domain.RepositoryContracts.Tickets;
 using TicketService.Domain.RepositoryModels;
+using TicketService.Domain.RepositoryModels.Enums;
 
 namespace TicketService.Infrastructure.Database.Repositories;
 
-public class TicketsRepository(TicketServiceDbContext dbContext) : TicketServiceDbRepository<Ticket>(dbContext), ITicketsRepository
+public class TicketsRepository(TicketServiceDbContext dbContext)
+    : TicketServiceDbRepository<Ticket>(dbContext), ITicketsRepository
 {
     public async Task<List<Ticket>> GetAllAsync()
     {
@@ -26,5 +28,16 @@ public class TicketsRepository(TicketServiceDbContext dbContext) : TicketService
     {
         return await GetAllRecords().Where(x => x.EventId == eventId).OrderByDescending(x => x.PlaceNumber)
             .FirstOrDefaultAsync();
+    }
+
+    public async Task<Ticket?> GetById(Guid ticketId)
+    {
+        return await GetAllRecords().FirstOrDefaultAsync(x => x.Id == ticketId);
+    }
+
+    public async Task ReserveTicketAsync(Guid ticketId)
+    {
+        await GetAllRecords().Where(x => x.Id == ticketId)
+            .ExecuteUpdateAsync(x => x.SetProperty(b => b.Status, TicketStatus.Reserved));
     }
 }
