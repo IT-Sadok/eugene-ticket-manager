@@ -1,5 +1,7 @@
+using Confluent.Kafka;
 using EventService.Api.Controllers;
 using EventService.Api.Helpers;
+using EventService.Application.Consumers;
 using EventService.Application.Extensions;
 using EventService.Domain.Messages;
 using EventService.Domain.RepositoryContracts;
@@ -22,9 +24,30 @@ builder.Services.AddMassTransit(x =>
     x.UsingInMemory();
     x.AddRider(rider =>
     {
+        rider.AddConsumer<OrderUpdateEventConsumer>(c => c.Options<BatchOptions>(o =>
+        {
+            o.MessageLimit = 50;
+            o.TimeLimit = TimeSpan.FromSeconds(5);
+        }));
         rider.AddProducer<ReserveTicketEvent>(KafkaConstants.TicketReservationRequestTopic);
 
-        rider.UsingKafka((context, cfg) => { cfg.Host(kafkaBootstrapServers); });
+        rider.UsingKafka((context, cfg) =>
+        {
+            cfg.Host(kafkaBootstrapServers);
+            cfg.TopicEndpoint<OrderUpdateEvent>(KafkaConstants.OrderUpdateEventTopic, KafkaConstants.EventServiceGroup,
+                e =>
+                {
+                    e.CreateIfMissing(t =>
+                    {
+                        t.NumPartitions = 1;
+                        t.ReplicationFactor = 1;
+                    });
+
+                    e.ConfigureConsumer<OrderUpdateEventConsumer>(context);
+
+                    e.AutoOffsetReset = AutoOffsetReset.Earliest;
+                });
+        });
     });
 });
 var app = builder.Build();
@@ -49,4 +72,5 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.MapEventEndpoints();
+app.MapOrdersEndpoints();
 app.Run();
