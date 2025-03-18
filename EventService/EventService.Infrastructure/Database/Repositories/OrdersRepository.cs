@@ -22,4 +22,10 @@ public class OrdersRepository : EventServiceDbRepository<Order>, IOrdersReposito
 
         await Task.WhenAll(tasks);
     }
+
+    public async Task<List<Order>> GetOrdersByTicketIdsAsync(List<Guid> ticketIds)
+    {
+        var filter = Builders<Order>.Filter.In(o => o.TicketId, ticketIds);
+        return await _collection.Find(filter).ToListAsync();
+    }
 }

@@ -1,11 +1,13 @@
+using System.Data;
 using MassTransit;
 using TicketService.Domain.Messages;
+using TicketService.Domain.RepositoryContracts.Outbox;
 using TicketService.Domain.RepositoryContracts.Tickets;
 using TicketService.Domain.RepositoryModels.Enums;
 
 namespace TicketService.Application.Consumers;
 
-public class ReserveTicketEventConsumer(ITicketsRepository ticketsRepository, ITopicProducer<OrderUpdateEvent> producer)
+public class ReserveTicketEventConsumer(ITicketsRepository ticketsRepository, ITopicProducer<OrderUpdateEvent> producer, IOutboxRepository outboxRepository)
     : IConsumer<Batch<ReserveTicketEvent>>
 {
     public async Task Consume(ConsumeContext<Batch<ReserveTicketEvent>> context)
@@ -26,9 +28,13 @@ public class ReserveTicketEventConsumer(ITicketsRepository ticketsRepository, IT
                 await producer.Produce(new OrderUpdateEvent() { TicketId = message.TicketId, IsFailure = true });
                 continue;
             }
+            await using var transaction = await ticketsRepository.BeginTransactionAsync(IsolationLevel.Serializable);
 
             await ticketsRepository.ReserveTicketAsync(ticket.Id);
-            await producer.Produce(new OrderUpdateEvent() { TicketId = message.TicketId, IsFailure = false });
+            await outboxRepository.InsertOutboxMessageAsync(new OrderUpdateEvent()
+                { TicketId = message.TicketId, IsFailure = false });
+
+            await transaction.CommitAsync();
         }
     }
 }
