@@ -7,7 +7,7 @@ namespace EventService.Infrastructure.Database;
 public class EventServiceDbRepository<T>() : IEventServiceDbRepository<T>
     where T : BaseEntity
 {
-    private readonly IMongoCollection<T> _collection;
+    public readonly IMongoCollection<T> _collection;
 
     protected EventServiceDbRepository(IMongoDatabase database, string collectionName) : this()
     {
@@ -23,5 +23,4 @@ public class EventServiceDbRepository<T>() : IEventServiceDbRepository<T>
     {
         await _collection.InsertOneAsync(entity);
     }
-
 }

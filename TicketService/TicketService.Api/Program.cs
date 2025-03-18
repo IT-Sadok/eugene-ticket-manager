@@ -26,12 +26,13 @@ builder.Services.AddMassTransit(x =>
     x.UsingInMemory();
     x.AddRider(rider =>
     {
-        rider.AddConsumer<TicketAvailabilityEventConsumer>(c =>
+        rider.AddConsumer<ReserveTicketEventConsumer>(c =>
             c.Options<BatchOptions>(o =>
             {
                 o.MessageLimit = 50;
                 o.TimeLimit = TimeSpan.FromSeconds(5);
             }));
+        rider.AddProducer<OrderUpdateEvent>(KafkaConstants.OrderUpdateEventTopic);
 
         rider.UsingKafka((context, cfg) =>
         {
@@ -46,7 +47,7 @@ builder.Services.AddMassTransit(x =>
                     t.ReplicationFactor = 1;
                 });
 
-                e.ConfigureConsumer<TicketAvailabilityEventConsumer>(context);
+                e.ConfigureConsumer<ReserveTicketEventConsumer>(context);
 
                 e.AutoOffsetReset = AutoOffsetReset.Earliest;
             });
@@ -72,7 +73,6 @@ app.MapControllers();
 app.MapTicketsEndpoint();
 using (var scope = app.Services.CreateScope())
 {
-    scope.ServiceProvider.GetRequiredService<TicketServiceDbContext>().Database.EnsureDeleted();
     scope.ServiceProvider.GetRequiredService<TicketServiceDbContext>().Database.EnsureCreated();
 }
 app.Run();

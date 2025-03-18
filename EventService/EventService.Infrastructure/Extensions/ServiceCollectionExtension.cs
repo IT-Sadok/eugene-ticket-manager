@@ -1,5 +1,6 @@
 ﻿using EventService.Domain.RepositoryContracts;
 using EventService.Domain.RepositoryContracts.Events;
+using EventService.Domain.RepositoryContracts.Orders;
 using EventService.Infrastructure.Database.MongoInitializer;
 using EventService.Infrastructure.Database.Repositories;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +17,7 @@ public static class ServiceCollectionExtension
             new MongoClient(configuration.GetConnectionString("EventServiceDbConnection")).GetDatabase(
                 configuration["DatabaseName"]));
         services.AddScoped<IEventsRepository, EventsRepository>()
+            .AddScoped<IOrdersRepository, OrdersRepository>()
             .AddSingleton<IMongoDbInitializer, MongoDbInitializer>();
     }
 }
