@@ -19,7 +19,7 @@ public class OrderUpdateJob(IOutboxRepository outboxRepository, ITopicProducer<O
             var orderUpdateEvent = JsonSerializer.Deserialize<OrderUpdateEvent>(outboxMessage.Data);
             await producer.Produce(orderUpdateEvent);
             await outboxRepository.UpdateMessageProcessedDateAsync(outboxMessage.Id, dtNow);
+            await transaction.CommitAsync();
         }
-        await transaction.CommitAsync();
     }
 }
