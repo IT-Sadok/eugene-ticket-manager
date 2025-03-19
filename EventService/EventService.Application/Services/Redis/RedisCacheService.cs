@@ -5,13 +5,13 @@ namespace EventService.Application.Services.Redis;
 
 public class RedisCacheService(IDistributedCache cache) : IRedisCacheService
 {
-    public async Task<T?> GetCachedData<T>(string key)
+    public async Task<T?> GetCachedDataAsync<T>(string key)
     {
         var cachedData = await cache.GetStringAsync(key);
         return cachedData is not null ? JsonSerializer.Deserialize<T>(cachedData) : default;
     }
 
-    public async Task SetCachedData<T>(string key, T data, int expirationMinutes = 10)
+    public async Task SetCachedDataAsync<T>(string key, T data, int expirationMinutes = 10)
     {
         var options = new DistributedCacheEntryOptions
         {
@@ -22,7 +22,7 @@ public class RedisCacheService(IDistributedCache cache) : IRedisCacheService
         await cache.SetStringAsync(key, serializedData, options);
     }
 
-    public async Task RemoveCachedData(string key)
+    public async Task RemoveCachedDataAsync(string key)
     {
         await cache.RemoveAsync(key);
     }

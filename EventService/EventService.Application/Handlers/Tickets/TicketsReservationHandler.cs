@@ -25,9 +25,9 @@ public class TicketsReservationHandler(
             TicketId = request.TicketId
         }, cancellationToken);
 
-        var cacheOrders = await redisCache.GetCachedData<List<Order>>(RedisKeyConstants.OrdersKey);
+        var cacheOrders = await redisCache.GetCachedDataAsync<List<Order>>(RedisKeyConstants.OrdersKey);
         if (cacheOrders == null) return;
         cacheOrders.Add(order);
-        await redisCache.SetCachedData(RedisKeyConstants.OrdersKey, cacheOrders);
+        await redisCache.SetCachedDataAsync(RedisKeyConstants.OrdersKey, cacheOrders);
     }
 }

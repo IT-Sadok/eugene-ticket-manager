@@ -2,7 +2,7 @@
 
 public interface IRedisCacheService
 {
-    Task<T?> GetCachedData<T>(string key);
-    Task SetCachedData<T>(string key, T data, int expirationMinutes = 10);
-    Task RemoveCachedData(string key);
+    Task<T?> GetCachedDataAsync<T>(string key);
+    Task SetCachedDataAsync<T>(string key, T data, int expirationMinutes = 10);
+    Task RemoveCachedDataAsync(string key);
 }
