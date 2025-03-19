@@ -1,4 +1,6 @@
-﻿using EventService.Domain.Enums;
+﻿using EventService.Application.Services;
+using EventService.Application.Services.Redis;
+using EventService.Domain.Enums;
 using EventService.Domain.Messages;
 using EventService.Domain.RepositoryContracts.Orders;
 using EventService.Domain.RepositoryModels;
@@ -6,7 +8,7 @@ using MassTransit;
 
 namespace EventService.Application.Consumers;
 
-public class OrderUpdateEventConsumer(IOrdersRepository ordersRepository) : IConsumer<Batch<OrderUpdateEvent>>
+public class OrderUpdateEventConsumer(IOrdersRepository ordersRepository, IRedisCacheService redisCache) : IConsumer<Batch<OrderUpdateEvent>>
 {
     public async Task Consume(ConsumeContext<Batch<OrderUpdateEvent>> context)
     {
@@ -28,6 +30,9 @@ public class OrderUpdateEventConsumer(IOrdersRepository ordersRepository) : ICon
         }
 
         if (ordersToUpdate.Any())
+        {
             await ordersRepository.UpdateOrdersStatusAsync(ordersToUpdate);
+            redisCache.RemoveCachedData(RedisKeyConstants.OrdersKey);
+        }
     }
 }
