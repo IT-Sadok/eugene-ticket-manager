@@ -32,7 +32,7 @@ public class OrderUpdateEventConsumer(IOrdersRepository ordersRepository, IRedis
         if (ordersToUpdate.Any())
         {
             await ordersRepository.UpdateOrdersStatusAsync(ordersToUpdate);
-            redisCache.RemoveCachedData(RedisKeyConstants.OrdersKey);
+            await redisCache.RemoveCachedData(RedisKeyConstants.OrdersKey);
         }
     }
 }

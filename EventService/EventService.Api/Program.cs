@@ -53,7 +53,7 @@ builder.Services.AddMassTransit(x =>
 
 builder.Services.AddStackExchangeRedisCache(options =>
 {
-    options.Configuration = "redis:6379";
+    options.Configuration = builder.Configuration.GetConnectionString("RedisConnection");
     options.InstanceName = "EventsPlatform";
 });
 var app = builder.Build();

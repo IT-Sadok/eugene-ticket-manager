@@ -12,12 +12,12 @@ public class GetAllOrdersHandler(IOrdersRepository repository, IRedisCacheServic
 
     public async Task<List<Order>> Handle(GetAllOrdersQuery request, CancellationToken cancellationToken)
     {
-        var cachedProducts = redisCache.GetCachedData<List<Order>>(RedisKeyConstants.OrdersKey);
+        var cachedProducts = await redisCache.GetCachedData<List<Order>>(RedisKeyConstants.OrdersKey);
         if (cachedProducts is not null)
             return cachedProducts;
 
         var orders = await repository.GetAllRecordsAsync();
-        redisCache.SetCachedData(RedisKeyConstants.OrdersKey, orders);
+        await redisCache.SetCachedData(RedisKeyConstants.OrdersKey, orders);
         return orders;
     }
 }
