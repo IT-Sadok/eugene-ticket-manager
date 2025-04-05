@@ -11,7 +11,7 @@ using MassTransit;
 var builder = WebApplication.CreateBuilder(args);
 
 var isLocalEnvironment = builder.Environment.EnvironmentName == "local";
-var kafkaBootstrapServers = Environment.GetEnvironmentVariable("KAFKA_BOOTSTRAP_SERVERS");
+var kafkaBootstrapServers = Environment.GetEnvironmentVariable("KAFKA_BOOTSTRAP_SERVERS") ?? builder.Configuration["KafkaBootstrap"];
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -80,3 +80,4 @@ using (var scope = app.Services.CreateScope())
 app.MapEventEndpoints();
 app.MapOrdersEndpoints();
 app.Run();
+public partial class Program { }
