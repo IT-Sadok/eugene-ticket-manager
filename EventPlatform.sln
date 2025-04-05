@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketService.Domain", "Tic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketService.Infrastructure", "TicketService\TicketService.Infrastructure\TicketService.Infrastructure.csproj", "{C211CFDB-9A45-4808-8C83-97F6335B761E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventService.Tests", "EventService\EventService.Tests\EventService.Tests.csproj", "{E42045FF-A9D4-4201-9137-7B260C8FF63C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,10 @@ Global
 		{C211CFDB-9A45-4808-8C83-97F6335B761E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C211CFDB-9A45-4808-8C83-97F6335B761E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C211CFDB-9A45-4808-8C83-97F6335B761E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E42045FF-A9D4-4201-9137-7B260C8FF63C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E42045FF-A9D4-4201-9137-7B260C8FF63C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E42045FF-A9D4-4201-9137-7B260C8FF63C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E42045FF-A9D4-4201-9137-7B260C8FF63C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0CA323B8-0C42-46D6-89D4-CFFF3182D93D} = {D378A933-66F1-4097-AA5E-EEF33B3C7659}
@@ -68,5 +74,6 @@ Global
 		{9DA706BA-B83C-4A1E-9DE6-87CB0584ABDD} = {259A0B5D-D08C-4FE1-9714-F5A3BEB96616}
 		{EB3523A3-E80A-4E0C-881C-BE4B9382992C} = {259A0B5D-D08C-4FE1-9714-F5A3BEB96616}
 		{C211CFDB-9A45-4808-8C83-97F6335B761E} = {259A0B5D-D08C-4FE1-9714-F5A3BEB96616}
+		{E42045FF-A9D4-4201-9137-7B260C8FF63C} = {D378A933-66F1-4097-AA5E-EEF33B3C7659}
 	EndGlobalSection
 EndGlobal

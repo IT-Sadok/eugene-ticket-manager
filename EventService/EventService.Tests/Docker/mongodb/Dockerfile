@@ -1,0 +1,10 @@
+FROM mongo:6.0
+
+EXPOSE 27017
+
+ENV MONGO_INITDB_ROOT_USERNAME=admin
+ENV MONGO_INITDB_ROOT_PASSWORD=Passw0rd!
+
+VOLUME ["/data/db"]
+
+CMD ["mongod"]
